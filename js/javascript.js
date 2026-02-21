@@ -17,18 +17,33 @@ function gameBoard() {
         console.log(boardWithValues);
     }
 
+    const dropToken = (row, column) => {
+        const availableCells = board.filter((row) => row[column].getValue === null)
+                                .map(row => row[column]);
+
+        if(!availableCells) return;
+        board[row][column].addToken();
+        printBoard();
+    }
+
     function cell() {
         let value = null;
 
         const getValue = () => value;
 
+        const addToken = () => {
+            value = 0;
+        } 
+
         return {
             getValue,
+            addToken,
         }
     }
 
     return {
         getBoard,
         printBoard,
+        dropToken,
     }
 }
