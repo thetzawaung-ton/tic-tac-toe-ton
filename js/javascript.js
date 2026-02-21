@@ -12,8 +12,13 @@ function gameBoard() {
 
     const getBoard = () => board;
 
+    const printBoard = () => {
+        const boardWithValues = board.map((row) => row.map((column) => column.getValue()));
+        console.log(boardWithValues);
+    }
+
     function cell() {
-        let value = 0;
+        let value = null;
 
         const getValue = () => value;
 
@@ -24,5 +29,6 @@ function gameBoard() {
 
     return {
         getBoard,
+        printBoard,
     }
 }
