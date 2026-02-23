@@ -17,22 +17,25 @@ function gameBoard() {
         console.log(boardWithValues);
     }
 
-    const dropToken = (row, column) => {
-        const availableCells = board.filter((row) => row[column].getValue() === null)
-                                .map(row => row[column]);
-
-        if(!availableCells) return;
-        board[row][column].addToken();
-        printBoard();
+    const dropToken = (row, column, playerToken) => {
+        if(board[row][column].getValue() !== 0) {
+            console.log('Spot already taken by another user');
+            printBoard();
+            return false;
+        } else {
+            board[row][column].addToken(playerToken);
+            printBoard();
+            return true;
+        }
     }
 
     function cell() {
-        let value = null;
+        let value = 0;
 
         const getValue = () => value;
 
-        const addToken = () => {
-            value = 0;
+        const addToken = (playerToken) => {
+            value = playerToken;
         } 
 
         return {
@@ -55,11 +58,11 @@ function gameController(
     const players = [
         {
             name: playerOneName,
-            token: 0,
+            token: 1,
         },
         {
             name: playerTwoName,
-            token: 1,
+            token: 2,
         }
     ];
     const board = gameBoard();
@@ -70,8 +73,18 @@ function gameController(
     }
     const getActivePlayer = () => activePlayer;
 
+    const playRound = (row, column) => {
+        console.log(`${getActivePlayer().name} dropping token`);
+
+        if(board.dropToken(row, column, getActivePlayer().token)) {
+            switchPlayerTurn();
+        }
+        console.log(`${activePlayer.name}'s turn`);
+    }
+
     return {
         switchPlayerTurn,
         getActivePlayer,
+        playRound,
     }
 }
