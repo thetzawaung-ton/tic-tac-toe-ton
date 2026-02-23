@@ -18,7 +18,7 @@ function gameBoard() {
     }
 
     const dropToken = (row, column) => {
-        const availableCells = board.filter((row) => row[column].getValue === null)
+        const availableCells = board.filter((row) => row[column].getValue() === null)
                                 .map(row => row[column]);
 
         if(!availableCells) return;
@@ -45,5 +45,33 @@ function gameBoard() {
         getBoard,
         printBoard,
         dropToken,
+    }
+}
+
+function gameController(
+    playerOneName = "Player One",
+    playerTwoName = "Player Two",
+) {
+    const players = [
+        {
+            name: playerOneName,
+            token: 0,
+        },
+        {
+            name: playerTwoName,
+            token: 1,
+        }
+    ];
+    const board = gameBoard();
+
+    let activePlayer = players[0];
+    function switchPlayerTurn() {
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    }
+    const getActivePlayer = () => activePlayer;
+
+    return {
+        switchPlayerTurn,
+        getActivePlayer,
     }
 }
