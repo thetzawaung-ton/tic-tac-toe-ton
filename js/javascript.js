@@ -126,10 +126,12 @@ function gameController(
 
 function displayController() {
     const game = gameController();
+    const playerTurn = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
     const resetGameBtn = document.querySelector('.reset');
 
     const updateScreen = () => {
+        playerTurn.textContent = `${game.getActivePlayer().name}'s turn`;
         boardDiv.textContent = "";
         const board = game.getBoard();
 
