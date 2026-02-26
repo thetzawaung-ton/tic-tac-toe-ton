@@ -98,12 +98,14 @@ function gameController(
             console.log(`${getActivePlayer().name} is the winner`);
             board.setInitialBoard();
             activePlayer = players[0];
+            moveCount = 0;
             return
         }
         if(moveCount == 9) {
             console.log("It is a tie");
             board.setInitialBoard();
             activePlayer = players[0];
+            moveCount = 0;
             return
         }
             switchPlayerTurn();
@@ -115,5 +117,41 @@ function gameController(
         switchPlayerTurn,
         getActivePlayer,
         playRound,
+        getBoard: board.getBoard
     }
 }
+
+function displayController() {
+    const game = gameController();
+    const boardDiv = document.querySelector('.board');
+
+    const updateScreen = () => {
+        boardDiv.textContent = "";
+        const board = game.getBoard();
+
+        board.forEach((row, rowIndex) => {
+            row.forEach((column, columnIndex) => {
+                const cellButton = document.createElement("button");
+                cellButton.classList.add("cell");
+
+                cellButton.dataset.row = rowIndex;
+                cellButton.dataset.column = columnIndex;
+
+                cellButton.textContent = column.getValue() === 0 ? '' : column.getValue();
+                boardDiv.appendChild(cellButton);
+            })
+        })
+    }
+
+    boardDiv.addEventListener('click', function(event) {
+        const selectedRow = event.target.dataset.row;
+        const selectedColumn = event.target.dataset.column;
+
+        game.playRound(selectedRow, selectedColumn);
+        updateScreen();
+    })
+
+    updateScreen();
+}
+
+displayController();
