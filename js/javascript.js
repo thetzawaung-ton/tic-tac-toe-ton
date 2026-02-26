@@ -81,6 +81,12 @@ function gameController(
     const getActivePlayer = () => activePlayer;
     let moveCount = 0;
 
+    const resetGame = () => {
+        board.setInitialBoard();
+        activePlayer = players[0];
+        moveCount = 0;
+    }
+
     const playRound = (row, column) => {
         console.log(`${getActivePlayer().name} dropping token`);
         const playerToken = getActivePlayer().token;
@@ -96,16 +102,12 @@ function gameController(
         board.checkCellValue(0, 0) === playerToken && board.checkCellValue(1, 1) === playerToken && board.checkCellValue(2, 2) === playerToken ||
         board.checkCellValue(0, 2) === playerToken && board.checkCellValue(1, 1) === playerToken && board.checkCellValue(2, 0) === playerToken) {          
             console.log(`${getActivePlayer().name} is the winner`);
-            board.setInitialBoard();
-            activePlayer = players[0];
-            moveCount = 0;
+            resetGame();
             return
         }
         if(moveCount == 9) {
             console.log("It is a tie");
-            board.setInitialBoard();
-            activePlayer = players[0];
-            moveCount = 0;
+            resetGame();
             return
         }
             switchPlayerTurn();
@@ -117,13 +119,15 @@ function gameController(
         switchPlayerTurn,
         getActivePlayer,
         playRound,
-        getBoard: board.getBoard
+        getBoard: board.getBoard,
+        resetGame,
     }
 }
 
 function displayController() {
     const game = gameController();
     const boardDiv = document.querySelector('.board');
+    const resetGameBtn = document.querySelector('.reset');
 
     const updateScreen = () => {
         boardDiv.textContent = "";
@@ -150,6 +154,11 @@ function displayController() {
         game.playRound(selectedRow, selectedColumn);
         updateScreen();
     })
+
+    resetGameBtn.addEventListener('click', function() {
+        game.resetGame();
+        updateScreen();
+    });
 
     updateScreen();
 }
