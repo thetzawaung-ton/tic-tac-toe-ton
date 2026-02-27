@@ -90,7 +90,6 @@ function gameController(
     const playRound = (row, column) => {
         console.log(`${getActivePlayer().name} dropping token`);
         const playerToken = getActivePlayer().token;
-        moveCount += 1;
 
         if(board.dropToken(row, column, playerToken)) {
             if(board.checkCellValue(0, 0) === playerToken && board.checkCellValue(0, 1) === playerToken && board.checkCellValue(0, 2) === playerToken ||
@@ -110,6 +109,7 @@ function gameController(
             resetGame();
             return
         }
+            moveCount += 1;
             switchPlayerTurn();
         }
         console.log(`${activePlayer.name}'s turn`);
