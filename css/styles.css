@@ -19,3 +19,7 @@
     align-items: center;
     font-size: 40px;
 }
+
+.locked {
+    pointer-events: none;
+}

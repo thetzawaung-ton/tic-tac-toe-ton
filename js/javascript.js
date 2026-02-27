@@ -101,15 +101,13 @@ function gameController(
         board.checkCellValue(0, 0) === playerToken && board.checkCellValue(1, 1) === playerToken && board.checkCellValue(2, 2) === playerToken ||
         board.checkCellValue(0, 2) === playerToken && board.checkCellValue(1, 1) === playerToken && board.checkCellValue(2, 0) === playerToken) {          
             console.log(`${getActivePlayer().name} is the winner`);
-            resetGame();
-            return
+            return "win";
         }
+        moveCount += 1;
         if(moveCount == 9) {
             console.log("It is a tie");
-            resetGame();
-            return
+            return "tie";
         }
-            moveCount += 1;
             switchPlayerTurn();
         }
         console.log(`${activePlayer.name}'s turn`);
@@ -149,15 +147,29 @@ function displayController() {
         })
     }
 
+    const gameStatus = document.querySelector('.check-status');
+
     boardDiv.addEventListener('click', function(event) {
         const selectedRow = event.target.dataset.row;
         const selectedColumn = event.target.dataset.column;
 
-        game.playRound(selectedRow, selectedColumn);
+        const result = game.playRound(selectedRow, selectedColumn);
         updateScreen();
+
+        if(result === "win") {
+            gameStatus.textContent = `${game.getActivePlayer().name} is the winner`;
+            boardDiv.classList.add('locked');
+        }
+
+        if(result === "tie") {
+            gameStatus.textContent = "It is a tie";
+            boardDiv.classList.add('locked');
+        }
     })
 
     resetGameBtn.addEventListener('click', function() {
+        boardDiv.classList.remove('locked');
+        gameStatus.textContent = "";
         game.resetGame();
         updateScreen();
     });
