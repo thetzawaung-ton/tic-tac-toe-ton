@@ -72,6 +72,12 @@ function gameController(
             token: "X",
         }
     ];
+
+    const changePlayerName = (name1, name2) => {
+        players[0].name = name1;
+        players[1].name = name2;
+    }
+
     const board = gameBoard();
 
     let activePlayer = players[0];
@@ -119,6 +125,7 @@ function gameController(
         playRound,
         getBoard: board.getBoard,
         resetGame,
+        changePlayerName,
     }
 }
 
@@ -127,6 +134,15 @@ function displayController() {
     const playerTurn = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
     const resetGameBtn = document.querySelector('.reset');
+    const playerNameChangeBtn = document.querySelector('.change-player-name');
+
+    playerNameChangeBtn.addEventListener('click', function() {
+        const playerOneInput = prompt("Enter Player One Name", "Player One");
+        const playerTwoInput = prompt("Enter Player Two Name", "Player Two");
+
+        game.changePlayerName(playerOneInput, playerTwoInput);
+        updateScreen();
+    })
 
     const updateScreen = () => {
         playerTurn.textContent = `${game.getActivePlayer().name}'s turn`;
@@ -176,5 +192,4 @@ function displayController() {
 
     updateScreen();
 }
-
 displayController();
