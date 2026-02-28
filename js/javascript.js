@@ -74,6 +74,9 @@ function gameController(
     ];
 
     const changePlayerName = (name1, name2) => {
+        if(name1 === name2) {
+            return "error";
+        }
         players[0].name = name1;
         players[1].name = name2;
     }
@@ -135,12 +138,16 @@ function displayController() {
     const boardDiv = document.querySelector('.board');
     const resetGameBtn = document.querySelector('.reset');
     const playerNameChangeBtn = document.querySelector('.change-player-name');
+    const errorMessage = document.querySelector('.error-message');
 
     playerNameChangeBtn.addEventListener('click', function() {
         const playerOneInput = prompt("Enter Player One Name", "Player One");
         const playerTwoInput = prompt("Enter Player Two Name", "Player Two");
 
-        game.changePlayerName(playerOneInput, playerTwoInput);
+        const changeName = game.changePlayerName(playerOneInput, playerTwoInput);
+        if(changeName === "error") {
+            errorMessage.textContent = "Player names can not be the same";
+        }
         updateScreen();
     })
 
@@ -168,6 +175,7 @@ function displayController() {
     boardDiv.addEventListener('click', function(event) {
         const selectedRow = event.target.dataset.row;
         const selectedColumn = event.target.dataset.column;
+        errorMessage.textContent = "";
 
         const result = game.playRound(selectedRow, selectedColumn);
         updateScreen();
@@ -185,6 +193,7 @@ function displayController() {
 
     resetGameBtn.addEventListener('click', function() {
         boardDiv.classList.remove('locked');
+        errorMessage.textContent = "";
         gameStatus.textContent = "";
         game.resetGame();
         updateScreen();
