@@ -50,3 +50,16 @@ body {
 h2, .board {
     margin-bottom: 0.5rem;
 }
+
+.button-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+}
+
+.button-container button {
+    padding: 1rem;
+    background-color: rgb(201, 214, 210);
+    border-radius: 1rem;
+    border: 1px solid rgb(201, 214, 210)
+}
