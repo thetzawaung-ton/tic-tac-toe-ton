@@ -183,11 +183,13 @@ function displayController() {
         if(result === "win") {
             gameStatus.textContent = `${game.getActivePlayer().name} is the winner`;
             boardDiv.classList.add('locked');
+            playerTurn.textContent = "";
         }
 
         if(result === "tie") {
             gameStatus.textContent = "It is a tie";
             boardDiv.classList.add('locked');
+            playerTurn.textContent = "";
         }
     })
 
